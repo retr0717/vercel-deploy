@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.downloadS3Folder = void 0;
-const { S3Client, ListObjectsV2Command, GetObjectCommand } = require('@aws-sdk/client-s3');
+exports.uploadFile = exports.downloadS3Folder = void 0;
+const { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
 const fs_1 = __importDefault(require("fs"));
 const path = require('path');
 // const s3Client = new S3Client({ 
@@ -66,3 +66,19 @@ const downloadS3Folder = (prefix) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.downloadS3Folder = downloadS3Folder;
+const uploadFile = (fileName, localFilePath) => __awaiter(void 0, void 0, void 0, function* () {
+    const fileContent = fs_1.default.readFileSync(localFilePath);
+    const uploadParams = {
+        Bucket: 'vercel-storage',
+        Key: fileName,
+        Body: fileContent,
+    };
+    try {
+        const response = yield s3Client.send(new PutObjectCommand(uploadParams));
+        console.log("File uploaded successfully. Response:", response);
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+exports.uploadFile = uploadFile;

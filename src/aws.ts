@@ -1,4 +1,4 @@
-const { S3Client, ListObjectsV2Command, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, ListObjectsV2Command, GetObjectCommand , PutObjectCommand} = require('@aws-sdk/client-s3');
 import fs from "fs";
 const path = require('path');
 
@@ -56,5 +56,25 @@ export const downloadS3Folder = async (prefix: string) => {
     }
     catch (err) {
         console.log("Deploy error : ", err);
+    }
+}
+
+export const uploadFile = async (fileName : string, localFilePath : string) => {
+    const fileContent = fs.readFileSync(localFilePath);
+
+    const uploadParams = {
+        Bucket: 'vercel-storage',
+        Key: fileName,
+        Body: fileContent,
+    };
+
+    try
+    {
+        const response = await s3Client.send(new PutObjectCommand(uploadParams));
+        console.log("File uploaded successfully. Response:", response);
+    }
+    catch(err)
+    {
+        console.log(err);
     }
 }
