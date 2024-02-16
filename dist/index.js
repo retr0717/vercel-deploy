@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const redis_1 = require("redis");
 const aws_1 = require("./aws");
+const build_1 = require("./build");
 const dotenv = require('dotenv');
 dotenv.config();
 const subscriber = (0, redis_1.createClient)();
@@ -21,6 +22,7 @@ function main() {
             const res = yield subscriber.brPop((0, redis_1.commandOptions)({ isolated: true }), 'build-queue', 0);
             console.log("res from deploy : ", res);
             yield (0, aws_1.downloadS3Folder)(`/repos/${res === null || res === void 0 ? void 0 : res.element}`);
+            yield (0, build_1.buildProject)((res === null || res === void 0 ? void 0 : res.element) || '');
         }
     });
 }
