@@ -1,8 +1,7 @@
 #dirs
 node_modules/
-dist/
+dist
 
 #files
 .env
 package-lock.json
-.gitignore
