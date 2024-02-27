@@ -4,7 +4,7 @@ import { uploadFile } from "./aws";
 
 export const copyFinalBuild = (id: string ) => {
 
-    const fPath = path.join(__dirname, `/repos/${id}/dist`);
+    const fPath = path.join(__dirname, `repos/${id}/dist`);
 
     const allFiles = getAllFiles(fPath);
     allFiles.forEach(file => {

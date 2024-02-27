@@ -8,7 +8,7 @@ const path_1 = __importDefault(require("path"));
 const utils_1 = require("./utils");
 const aws_1 = require("./aws");
 const copyFinalBuild = (id) => {
-    const fPath = path_1.default.join(__dirname, `/repos/${id}/dist`);
+    const fPath = path_1.default.join(__dirname, `repos/${id}/dist`);
     const allFiles = (0, utils_1.getAllFiles)(fPath);
     allFiles.forEach(file => {
         (0, aws_1.uploadFile)(`dist/${id}/` + file.slice(fPath.length + 1), file);

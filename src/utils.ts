@@ -1,25 +1,17 @@
 import path from 'path';
 import fs from 'fs';
 
-export const getAllFiles = ( fpath :  string) => {
-    let response : string[] = [];
-    
-    //get all the files and directories from the given path.
-    const allFilesAndFolders = fs.readdirSync(fpath);
-    
-    allFilesAndFolders.forEach(file => {
-        
-        //getting all full path of the files and folder from the array.
-        const fullPath = path.join(fpath, file);
+export const getAllFiles = (folderPath: string) => {
+    let response: string[] = [];
 
-        if(fs.statSync(fullPath).isDirectory())
-        {
-            response = response.concat(getAllFiles(fullPath));
-        }
-        else{
-            response.push(fullPath);
+    const allFilesAndFolders = fs.readdirSync(folderPath);
+    allFilesAndFolders.forEach(file => {
+        const fullFilePath = path.join(folderPath, file);
+        if (fs.statSync(fullFilePath).isDirectory()) {
+            response = response.concat(getAllFiles(fullFilePath))
+        } else {
+            response.push(fullFilePath);
         }
     });
-
     return response;
 }

@@ -13,26 +13,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadFile = exports.downloadS3Folder = void 0;
+const dotenv = require('dotenv');
+dotenv.config();
 const { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
 const fs_1 = __importDefault(require("fs"));
 const path = require('path');
-// const s3Client = new S3Client({ 
-//     accessKeyId: process.env.AWS_ACCESS_KEY, 
-//     secretAccesskey: process.env.AWS_SECRET_ACCESS_KEY, 
-//     region: 'us-east-1'
+// const s3Client = new S3Client({
+//     endpoint: 'https://blr1.digitaloceanspaces.com', // Replace with your region
+//     credentials: {
+//         accessKeyId: "DO00V7YVYVAAAWYLV8QQ",
+//         secretAccessKey:"tDsyhdH1q4tPs7kr65JtaUrEfMWECLUwQPKB+4fEpz8",
+//     },
+//     region: 'blr1', // Set your desired region here
 // });
-// Configure AWS credentials and region
 const s3Client = new S3Client({
-    region: "us-east-1",
+    endpoint: process.env.ENDPOINT, // Replace with your region
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        secretAccesskey: process.env.AWS_SECRET_ACCESS_KEY
-    }
+        accessKeyId: process.env.ACCESS_KEY,
+        secretAccessKey: process.env.SECRET_KEY,
+    },
+    region: process.env.REGION, // Set your desired region here
 });
 const downloadS3Folder = (prefix) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const params = {
-        Bucket: "vercel",
+        Bucket: "vercel-storage",
         Prefix: prefix
     };
     try {
@@ -49,7 +54,10 @@ const downloadS3Folder = (prefix) => __awaiter(void 0, void 0, void 0, function*
                 if (!fs_1.default.existsSync(dirName)) {
                     fs_1.default.mkdirSync(dirName, { recursive: true });
                 }
-                const { Body } = yield s3Client.send(new GetObjectCommand(params));
+                const { Body } = yield s3Client.send(new GetObjectCommand({
+                    Bucket: "vercel-storage",
+                    Key
+                }));
                 Body.pipe(outputFile);
                 // Listening for the 'finish' event to resolve the promise after writing is complete
                 outputFile.on("finish", () => {

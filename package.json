@@ -16,7 +16,6 @@
     "@types/node": "^20.11.19",
     "dotenv": "^16.4.4",
     "nodemon": "^3.0.3",
-    "nodmeon": "^0.0.1-security",
     "redis": "^4.6.13",
     "ts-node": "^10.9.2"
   }
