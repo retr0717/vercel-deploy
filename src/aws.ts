@@ -5,15 +5,6 @@ const { S3Client, ListObjectsV2Command, GetObjectCommand , PutObjectCommand} = r
 import fs from "fs";
 const path = require('path');
 
-// const s3Client = new S3Client({
-//     endpoint: 'https://blr1.digitaloceanspaces.com', // Replace with your region
-//     credentials: {
-//         accessKeyId: "DO00V7YVYVAAAWYLV8QQ",
-//         secretAccessKey:"tDsyhdH1q4tPs7kr65JtaUrEfMWECLUwQPKB+4fEpz8",
-//     },
-//     region: 'blr1', // Set your desired region here
-// });
-
 const s3Client = new S3Client({
     endpoint: process.env.ENDPOINT, // Replace with your region
     credentials: {
